@@ -28,6 +28,6 @@ def main():
         app.add_url_rule(**kwargs_url)
 
     # Redirect to docs
-    app.add_url_rule("/", redirect_docs)
+    app.add_url_rule("/", view_func=redirect_docs)
 
-    app.run(port=5000)
+    app.run(host="0.0.0.0", port=5000)
