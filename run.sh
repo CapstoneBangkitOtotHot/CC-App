@@ -11,4 +11,4 @@ docker image rm cc-api --force
 docker build -t cc-api:0.0.1 .
 
 # Start it up
-docker run -p "127.0.0.1:5000:5000" --name "cc-api-main" -d
+docker run -p "127.0.0.1:5000:5000" --name "cc-api-main" -d cc-api:0.0.1
