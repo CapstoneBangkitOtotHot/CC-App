@@ -16,11 +16,18 @@ import flask
 from .auth.urls import urls_patterns as auth_urls
 
 
+def redirect_docs():
+    return flask.redirect("/docs")
+
+
 def main():
     app = flask.Flask("cc_api")
 
     # Auth urls
     for kwargs_url in auth_urls:
         app.add_url_rule(**kwargs_url)
+
+    # Redirect to docs
+    app.add_url_rule("/", redirect_docs)
 
     app.run(port=5000)
