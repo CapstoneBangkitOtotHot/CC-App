@@ -16,7 +16,7 @@ RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN useradd -ms /bin/bash cc-api -u 1000
+RUN useradd -ms /bin/bash cc-api -u 3000
 USER cc-api
 
 CMD ["python3", "run.py"]
