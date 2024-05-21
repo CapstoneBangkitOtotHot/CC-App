@@ -8,7 +8,7 @@ API for creating bridge between ML (Machine Learning) and MD (Mobile Development
 __version__ = "0.0.1"
 __description__ = "API for creating bridge between ML (Machine Learning) and MD (Mobile Development) team"
 __author__ = "C241-PS005"
-__author_email__ = "	C241-PS005@bangkit.academy"
+__author_email__ = "C241-PS005@bangkit.academy"
 __license__ = "MIT"
 # fmt: on
 
@@ -23,4 +23,4 @@ def main():
     for kwargs_url in auth_urls:
         app.add_url_rule(**kwargs_url)
 
-    app.run()
+    app.run(port=5000)
