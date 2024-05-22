@@ -1,5 +1,6 @@
 import requests
-from flask import request
+import json
+from flask import request, Response
 from .utils import build_auth_url, get_email_and_password_payload
 
 from ..utils import validate_json_request
@@ -20,7 +21,9 @@ def register_user():
         if error_msg == "EMAIL_EXISTS":
             error_msg = "Failed to register, email is already exists"
 
-        return {"status": "error", "message": error_msg}
+        return Response(
+            json.dumps({"status": "error", "message": error_msg}), status=r.status_code
+        )
 
     return {"status": "ok"}
 
@@ -37,7 +40,9 @@ def login():
     if not r.ok:
         error_msg = response_data["error"]["message"]
 
-        return {"status": "error", "message": error_msg}
+        return Response(
+            json.dumps({"status": "error", "message": error_msg}), status=r.status_code
+        )
 
     return {
         "status": "ok",
