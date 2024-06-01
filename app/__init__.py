@@ -13,6 +13,7 @@ __license__ = "MIT"
 # fmt: on
 
 import flask
+from .firebase import app as firebase_app  # noqa: F401
 from .auth.urls import urls_patterns as auth_urls
 
 

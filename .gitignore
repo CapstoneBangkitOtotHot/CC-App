@@ -3,3 +3,4 @@ test*.py
 docs/_build
 *.code-workspace
 firebase-web-api.key
+serviceaccountkey.json
