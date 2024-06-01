@@ -50,3 +50,52 @@ def login():
             "session_token": response_data["idToken"],
         },
     }
+
+@validate_json_request("email")
+def send_reset_password_email():
+    payload = {"requestType": "PASSWORD_RESET", "email": request.get_json().get("email")}
+
+    r = auth_session.post(
+        build_auth_url(firebase_api_key, "sendOobCode"),
+        json=payload
+    )
+    response_data = r.json()
+
+    if not r.ok:
+        error_msg = response_data.get("error", {}).get("message", "Unknown error")
+
+        return Response(
+            json.dumps({"status": "error", "message": error_msg}),
+            status=r.status_code
+        )
+
+    return{
+        "status": "ok", 
+        "message": "Password reset email sent"
+    }
+
+@validate_json_request("oobCode", "newPassword")
+def reset_password():
+    payload = {
+        "oobCode": request.get_json().get("oobCode"),
+        "newPassword": request.get_json().get("newPassword")
+    }
+
+    r = auth_session.post(
+        build_auth_url(firebase_api_key, "resetPassword"),
+        json=payload
+    )
+    response_data = r.json()
+
+    if not r.ok:
+        error_msg = response_data.get("error", {}).get("message", "Unknown error")
+
+        return Response(
+            json.dumps({"status": "error", "message": error_msg}),
+            status=r.status_code
+        )
+
+    return {
+        "status": "ok", 
+        "message": "Password has been reset"
+    }
