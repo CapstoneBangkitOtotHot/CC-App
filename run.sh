@@ -1,8 +1,8 @@
 # Stop app container
-sudo docker ps --filter status=running --filter name=cc-api-main -q | xargs docker stop
+sudo docker ps --filter status=running --filter name=cc-api-main -q | xargs sudo docker stop
 
 # Delete app container
-sudo docker ps --filter status=exited --filter name=cc-api-main -q | xargs docker rm
+sudo docker ps --filter status=exited --filter name=cc-api-main -q | xargs sudo docker rm
 
 # Delete app image
 sudo docker image rm cc-api --force
