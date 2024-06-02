@@ -5,30 +5,17 @@ API for creating bridge between ML (Machine Learning) and MD (Mobile Development
 """
 
 # fmt: off
-__version__ = "0.0.1"
+__version__ = "0.2.0"
 __description__ = "API for creating bridge between ML (Machine Learning) and MD (Mobile Development) team"
 __author__ = "C241-PS005"
 __author_email__ = "C241-PS005@bangkit.academy"
 __license__ = "MIT"
 # fmt: on
 
-import flask
-from .firebase import app as firebase_app  # noqa: F401
-from .auth.urls import urls_patterns as auth_urls
+# Initialize firebase app
+from . import firebase  # noqa: F401
+from .app import app
 
-
-def redirect_docs():
-    return flask.redirect("/docs")
-
-
-def main():
-    app = flask.Flask("cc_api")
-
-    # Auth urls
-    for kwargs_url in auth_urls:
-        app.add_url_rule(**kwargs_url)
-
-    # Redirect to docs
-    app.add_url_rule("/", view_func=redirect_docs)
-
-    app.run(host="0.0.0.0", port=5000)
+app.title = "CC-App"
+app.description = __description__
+app.version = __version__

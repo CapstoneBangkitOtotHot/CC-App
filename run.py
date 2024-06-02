@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from subprocess import Popen
+from argparse import ArgumentParser
 
 firebase_file_key = "firebase-web-api.key"
 
@@ -11,6 +13,10 @@ elif os.environ.get("FIREBASE_API_KEY") is None:
 
     os.environ.setdefault("FIREBASE_API_KEY", api_key)
 
-from app import main  # noqa: E402
+argsparser = ArgumentParser("CC-App-CLI-Runner")
+argsparser.add_argument("--debug", action="store_true")
 
-main()
+args = argsparser.parse_args()
+
+proc = Popen(["fastapi", "dev" if args.debug else "run", "app", "--port", "5000"])
+proc.communicate()
