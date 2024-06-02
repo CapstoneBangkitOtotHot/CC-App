@@ -5,7 +5,7 @@ API for creating bridge between ML (Machine Learning) and MD (Mobile Development
 """
 
 # fmt: off
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __description__ = "API for creating bridge between ML (Machine Learning) and MD (Mobile Development) team"
 __author__ = "C241-PS005"
 __author_email__ = "C241-PS005@bangkit.academy"
