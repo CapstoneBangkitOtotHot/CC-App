@@ -24,7 +24,7 @@ def create_session_and_refresh_token(response_data):
         },
     }
 
-
+# Reference: https://testdriven.io/blog/fastapi-jwt-auth/#:~:text=This%20is%20done%20by%20scanning,%2Fauth%2Fauth_handler.py.
 class JWTBearer(HTTPBearer):
 
     async def __call__(self, request: Request):
