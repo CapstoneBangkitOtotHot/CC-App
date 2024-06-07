@@ -33,6 +33,19 @@ def register_user(data: LoginRequestModel):
             {"status": "error", "message": error_msg}, status_code=r.status_code
         )
 
+    r = auth_session.post(
+        build_auth_url("update"),
+        json={"displayName": "", "photoUrl": "", "idToken": response_data["idToken"]},
+    )
+    response_data = r.json()
+
+    if not r.ok:
+        error_msg = response_data["error"]["message"]
+
+        return JSONResponse(
+            {"status": "error", "message": error_msg}, status_code=r.status_code
+        )
+
     return {"status": "ok"}
 
 
