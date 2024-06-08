@@ -12,6 +12,10 @@ class RefreshTokenRequestModel(BaseModel):
     token: str
 
 
+class SendPasswordResetEmailRequestModel(BaseModel):
+    email: str
+
+
 # ========== Response Models (200 HTTP Code) ===========
 
 
@@ -32,3 +36,13 @@ class LoginResponseModel(BaseModel):
 class ResetPasswordResponseModel(BaseModel):
     status: str = "ok"
     message: str = "Password reset email sent"
+
+
+class SendPasswordResetEmailResponseModel(BaseModel):
+    status: str = "ok"
+    message: str = "Password reset email sent"
+
+
+class DeleteAccountResponseModel(BaseModel):
+    status: str = "ok"
+    message: str = "User account deleted successfully"

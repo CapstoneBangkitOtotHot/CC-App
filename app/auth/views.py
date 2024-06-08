@@ -11,13 +11,14 @@ from .utils import (
     JWTBearer,
     get_user_data_with_session_token,
 )
-from .models import LoginRequestModel, RefreshTokenRequestModel
+from .models import LoginRequestModel, RefreshTokenRequestModel, SendPasswordResetEmailRequestModel
 
 
 auth_session = requests.Session()
 auth_scheme = JWTBearer()
 
 
+# ==================== REGISTER ====================
 def register_user(data: LoginRequestModel):
     payload = {"email": data.email, "password": data.password}
 
@@ -49,6 +50,7 @@ def register_user(data: LoginRequestModel):
     return {"status": "ok"}
 
 
+# ==================== LOGIN ====================
 def login(data: LoginRequestModel):
     payload = {"email": data.email, "password": data.password}
 
@@ -65,6 +67,7 @@ def login(data: LoginRequestModel):
     return create_session_and_refresh_token(response_data)
 
 
+# ==================== REFRESH TOKEN ====================
 def refresh(data: RefreshTokenRequestModel):
     payload = {"idToken": data.token}
 
@@ -85,6 +88,7 @@ def refresh(data: RefreshTokenRequestModel):
     )
 
 
+# ==================== LOGOUT ====================
 def logout(
     auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)],
 ):
@@ -106,6 +110,7 @@ def logout(
     return {"status": "ok"}
 
 
+# ==================== RESET PASSWORD ====================
 def reset_password(
     auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)],
 ):
@@ -135,3 +140,54 @@ def reset_password(
         )
 
     return {"status": "ok", "message": "Password reset email sent"}
+
+
+# ==================== SEND PASSWORD RESET EMAIL ====================
+def send_password_reset_email(data: SendPasswordResetEmailRequestModel):
+    payload = {"requestType": "PASSWORD_RESET","email": data.email}
+
+    r = auth_session.post(build_auth_url("sendOobCode"), json=payload)
+    response_data = r.json()
+
+    if not r.ok:
+        error_msg = response_data.get("error", {}).get("message", "Unknown error")
+        if error_msg == "EMAIL_NOT_FOUND":
+            error_msg = "No user found with this email"
+
+        return JSONResponse(
+            {"status": "error", "message": error_msg}, status_code=r.status_code
+        )
+
+    return {"status": "ok", "message": "Password reset email sent"}
+
+# ==================== DELETE ACCOUNT ====================
+def delete_account(
+    auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)],
+):
+    user_data = get_user_data_with_session_token(
+        token=auth.credentials, session=auth_session
+    )
+
+    if user_data is None:
+        return JSONResponse(
+            {"status": "error", "message": "Login invalid or user not found"},
+            status_code=400,
+        )
+
+    id_token = user_data.get("idToken")  # Get idToken from user data
+    if not id_token:
+        return JSONResponse(
+            {"status": "error", "message": "ID token not found in user data"},
+            status_code=400,
+        )
+    
+    payload = {"idToken": id_token}
+
+    r = auth_session.post(build_auth_url("delete"), json=payload)
+    if not r.ok:
+        error_msg = r.json().get("error", {}).get("message", "Unknown error")
+        return JSONResponse(
+            {"status": "error", "message": error_msg}, status_code=r.status_code
+        )
+
+    return {"status": "ok", "message": "User account deleted successfully"}

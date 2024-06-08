@@ -4,8 +4,10 @@ from .views import (
     reset_password,
     logout,
     refresh,
+    send_password_reset_email,
+    delete_account
 )
-from .models import OkResponseModel, ResetPasswordResponseModel, LoginResponseModel
+from .models import OkResponseModel, ResetPasswordResponseModel, LoginResponseModel, SendPasswordResetEmailResponseModel, DeleteAccountResponseModel
 
 urls_patterns = [
     {
@@ -44,9 +46,25 @@ urls_patterns = [
         "path": "/auth/reset-password",
         "endpoint": reset_password,
         "methods": ["POST"],
-        "summary": "Reset password using email",
-        "description": "Send reset password link with email",
+        "summary": "Reset Password (Logged In)",
+        "description": "Reset password when logged in using session token",
         "responses": {200: {"model": ResetPasswordResponseModel}},
+    },
+    {
+        "path": "/auth/send-password-reset-email",
+        "endpoint": send_password_reset_email,
+        "methods": ["POST"],
+        "summary": "Send Password Reset Email",
+        "description": "Send reset password link to email for users who forgot their password",
+        "responses": {200: {"model": SendPasswordResetEmailResponseModel}},
+    },
+    {
+        "path": "/auth/delete-account",
+        "endpoint": delete_account,
+        "methods": ["POST"],
+        "summary": "Delete Account",
+        "description": "Delete user account using session token",
+        "responses": {200: {"model": DeleteAccountResponseModel}},
     },
 ]
 
