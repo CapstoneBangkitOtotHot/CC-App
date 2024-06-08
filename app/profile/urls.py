@@ -8,7 +8,7 @@ urls_patterns = [
     {
         "path": "/profile/get-user",
         "endpoint": get_profile,
-        "methods": ["POST"],
+        "methods": ["GET"],
         "summary": "Get User Profile",
         "description": "Get user data using session token",
         "responses": {200: {"model": GetProfileResponseModel}},
