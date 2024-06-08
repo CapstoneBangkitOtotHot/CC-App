@@ -68,5 +68,7 @@ def get_user_data_with_session_token(token: str, session: Session):
         return None
 
     response_data = r.json()
-
-    return response_data["users"][0]
+    user_data = response_data["users"][0]
+    user_data["idToken"] = id_token
+    
+    return user_data
