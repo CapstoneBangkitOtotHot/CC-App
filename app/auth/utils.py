@@ -5,6 +5,7 @@ from firebase_admin.auth import create_custom_token
 from fastapi.security import HTTPBearer
 from fastapi.exceptions import HTTPException
 from fastapi.requests import Request
+from fastapi.responses import JSONResponse
 from ..config import firebase_api_key
 
 
@@ -23,6 +24,7 @@ def create_session_and_refresh_token(response_data):
             "refresh_token": refresh_token,
         },
     }
+
 
 # Reference: https://testdriven.io/blog/fastapi-jwt-auth/#:~:text=This%20is%20done%20by%20scanning,%2Fauth%2Fauth_handler.py.
 class JWTBearer(HTTPBearer):
@@ -70,5 +72,22 @@ def get_user_data_with_session_token(token: str, session: Session):
     response_data = r.json()
     user_data = response_data["users"][0]
     user_data["idToken"] = id_token
-    
+
     return user_data
+
+
+def send_confirm_email(id_token: str, auth_session: Session):
+    r = auth_session.post(
+        build_auth_url("sendOobCode"),
+        json={"idToken": id_token, "requestType": "VERIFY_EMAIL"},
+    )
+    response_data = r.json()
+
+    if not r.ok:
+        error_msg = response_data["error"]["message"]
+
+        return JSONResponse(
+            {"status": "error", "message": error_msg}, status_code=r.status_code
+        )
+
+    # Return none if success

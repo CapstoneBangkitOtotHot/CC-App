@@ -15,11 +15,6 @@ app = FastAPI(
     ],
 )
 
-# import fastapi.openapi.utils as override
-# override.validation_error_response_definition["properties"].update(
-#     {"status": {"title": "error", "type": "string", "default": "error"}}
-# )
-
 
 async def validation_exception_handler(
     request: Request, exceptions: RequestValidationError

@@ -5,9 +5,18 @@ from .views import (
     logout,
     refresh,
     send_password_reset_email,
-    delete_account
+    delete_account,
+    get_status_email_verification,
+    send_email_verification_handler,
 )
-from .models import OkResponseModel, ResetPasswordResponseModel, LoginResponseModel, SendPasswordResetEmailResponseModel, DeleteAccountResponseModel
+from .models import (
+    OkResponseModel,
+    ResetPasswordResponseModel,
+    LoginResponseModel,
+    SendPasswordResetEmailResponseModel,
+    DeleteAccountResponseModel,
+    GetStatusEmailVerificationResponseModel,
+)
 
 urls_patterns = [
     {
@@ -15,7 +24,7 @@ urls_patterns = [
         "endpoint": register_user,
         "methods": ["POST"],
         "summary": "Register",
-        "description": "Register using email and password",
+        "description": "Register using email and password and send email confirmation",
         "responses": {200: {"model": OkResponseModel}},
     },
     {
@@ -65,6 +74,22 @@ urls_patterns = [
         "summary": "Delete Account",
         "description": "Delete user account using session token",
         "responses": {200: {"model": DeleteAccountResponseModel}},
+    },
+    {
+        "path": "/auth/get-status-email-confirmation",
+        "endpoint": get_status_email_verification,
+        "methods": ["GET"],
+        "summary": "Get status email verification",
+        "description": "Check if user email is verified or not",
+        "responses": {200: {"model": GetStatusEmailVerificationResponseModel}},
+    },
+    {
+        "path": "/auth/send-email-confirmation",
+        "endpoint": send_email_verification_handler,
+        "methods": ["POST"],
+        "summary": "Send email confirmation",
+        "description": "Send email confirmation to the user",
+        "responses": {200: {"model": OkResponseModel}},
     },
 ]
 

@@ -10,8 +10,13 @@ from .utils import (
     create_session_and_refresh_token,
     JWTBearer,
     get_user_data_with_session_token,
+    send_confirm_email,
 )
-from .models import LoginRequestModel, RefreshTokenRequestModel, SendPasswordResetEmailRequestModel
+from .models import (
+    LoginRequestModel,
+    RefreshTokenRequestModel,
+    SendPasswordResetEmailRequestModel,
+)
 
 
 auth_session = requests.Session()
@@ -34,9 +39,12 @@ def register_user(data: LoginRequestModel):
             {"status": "error", "message": error_msg}, status_code=r.status_code
         )
 
+    id_token = response_data["idToken"]
+
+    # Set initial username
     r = auth_session.post(
         build_auth_url("update"),
-        json={"displayName": "", "photoUrl": "", "idToken": response_data["idToken"]},
+        json={"displayName": "", "photoUrl": "", "idToken": id_token},
     )
     response_data = r.json()
 
@@ -46,6 +54,11 @@ def register_user(data: LoginRequestModel):
         return JSONResponse(
             {"status": "error", "message": error_msg}, status_code=r.status_code
         )
+
+    # Send confirmation email.
+    err = send_confirm_email(id_token, auth_session)
+    if err:
+        return err
 
     return {"status": "ok"}
 
@@ -144,7 +157,7 @@ def reset_password(
 
 # ==================== SEND PASSWORD RESET EMAIL ====================
 def send_password_reset_email(data: SendPasswordResetEmailRequestModel):
-    payload = {"requestType": "PASSWORD_RESET","email": data.email}
+    payload = {"requestType": "PASSWORD_RESET", "email": data.email}
 
     r = auth_session.post(build_auth_url("sendOobCode"), json=payload)
     response_data = r.json()
@@ -159,6 +172,7 @@ def send_password_reset_email(data: SendPasswordResetEmailRequestModel):
         )
 
     return {"status": "ok", "message": "Password reset email sent"}
+
 
 # ==================== DELETE ACCOUNT ====================
 def delete_account(
@@ -180,7 +194,7 @@ def delete_account(
             {"status": "error", "message": "ID token not found in user data"},
             status_code=400,
         )
-    
+
     payload = {"idToken": id_token}
 
     r = auth_session.post(build_auth_url("delete"), json=payload)
@@ -191,3 +205,47 @@ def delete_account(
         )
 
     return {"status": "ok", "message": "User account deleted successfully"}
+
+
+def get_status_email_verification(
+    auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)]
+):
+    user_data = get_user_data_with_session_token(
+        token=auth.credentials,
+        session=auth_session,
+    )
+
+    if user_data is None:
+        return JSONResponse(
+            {"status": "error", "message": "Login invalid or user not found"},
+            status_code=400,
+        )
+
+    return {"status": "ok", "email_verified": user_data["emailVerified"]}
+
+
+def send_email_verification_handler(
+    auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)]
+):
+    user_data = get_user_data_with_session_token(
+        token=auth.credentials,
+        session=auth_session,
+    )
+
+    if user_data["emailVerified"]:
+        return JSONResponse(
+            {"status": "error", "message": "User is already verified"}, status_code=400
+        )
+
+    if user_data is None:
+        return JSONResponse(
+            {"status": "error", "message": "Login invalid or user not found"},
+            status_code=400,
+        )
+
+    err = send_confirm_email(user_data["idToken"], auth_session)
+    if err:
+        return err
+
+    return {"status": "ok"}
+    pass

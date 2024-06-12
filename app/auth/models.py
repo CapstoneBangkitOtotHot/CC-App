@@ -46,3 +46,8 @@ class SendPasswordResetEmailResponseModel(BaseModel):
 class DeleteAccountResponseModel(BaseModel):
     status: str = "ok"
     message: str = "User account deleted successfully"
+
+
+class GetStatusEmailVerificationResponseModel(BaseModel):
+    status: str = "ok"
+    email_verified: bool
