@@ -1,8 +1,6 @@
-from .views import (
-    get_profile,
-    set_username
-)
+from .views import get_profile, set_username, upload_photo_profile
 from .models import GetProfileResponseModel, SetUsernameResponseModel
+from ..auth.models import OkResponseModel
 
 urls_patterns = [
     {
@@ -20,6 +18,14 @@ urls_patterns = [
         "summary": "Set Username",
         "description": "Set username using session token",
         "responses": {200: {"model": SetUsernameResponseModel}},
+    },
+    {
+        "path": "/profile/upload-photo",
+        "endpoint": upload_photo_profile,
+        "methods": ["POST"],
+        "summary": "Upload photo profile",
+        "description": "Upload image for photo profile user",
+        "responses": {200: {"model": OkResponseModel}},
     },
 ]
 

@@ -2,3 +2,5 @@ fastapi
 firebase-admin
 requests
 PyJWT
+google-cloud-storage
+Pillow
