@@ -1,4 +1,5 @@
 import secrets
+import os
 from typing import Annotated
 from fastapi import Depends, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials
@@ -77,6 +78,7 @@ def upload_photo_profile(
     auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)],
     image: UploadFile,
 ):
+    bucket = get_bucket()
     user_data = get_user_data_with_session_token(
         token=auth.credentials, session=auth_session
     )
@@ -96,12 +98,16 @@ def upload_photo_profile(
     image.file.seek(0)
     file_ext = get_image_format(image.file).lower()
 
-    # TODO: Create checking if user has already photo profile
-    # if the user already have photo profile delete it and upload the new one
+    # Check if user already have photo profile
+    # Delete it if they have it
+    filename = os.path.basename(user_data["photoUrl"])
+    if filename:
+        blob = bucket.blob(filename)
+        if blob.exists():
+            blob.delete()
 
     # Generate unique filename for the image
     image.file.seek(0)
-    bucket = get_bucket()
     filename = secrets.token_urlsafe(40) + f".{file_ext}"
     blob = bucket.blob(filename)
     while True:
