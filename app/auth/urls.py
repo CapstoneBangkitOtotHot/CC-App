@@ -1,7 +1,7 @@
 from .views import (
     register_user,
     login,
-    reset_password,
+    change_password,
     logout,
     refresh,
     send_password_reset_email,
@@ -11,7 +11,7 @@ from .views import (
 )
 from .models import (
     OkResponseModel,
-    ResetPasswordResponseModel,
+    ChangePasswordResponseModel,
     LoginResponseModel,
     SendPasswordResetEmailResponseModel,
     DeleteAccountResponseModel,
@@ -52,12 +52,12 @@ urls_patterns = [
         "responses": {200: {"model": LoginResponseModel}},
     },
     {
-        "path": "/auth/reset-password",
-        "endpoint": reset_password,
+        "path": "/auth/change-password",
+        "endpoint": change_password,
         "methods": ["POST"],
-        "summary": "Reset Password (Logged In)",
-        "description": "Reset password when logged in using session token",
-        "responses": {200: {"model": ResetPasswordResponseModel}},
+        "summary": "Change Password",
+        "description": "Change password when logged in using session token",
+        "responses": {200: {"model": ChangePasswordResponseModel}},
     },
     {
         "path": "/auth/send-password-reset-email",

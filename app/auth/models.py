@@ -16,6 +16,11 @@ class SendPasswordResetEmailRequestModel(BaseModel):
     email: str
 
 
+class ChangePasswordRequestModel(BaseModel):
+    old_password: str
+    new_password: str
+
+
 # ========== Response Models (200 HTTP Code) ===========
 
 
@@ -33,9 +38,9 @@ class LoginResponseModel(BaseModel):
     data: LoginResponseDataModel
 
 
-class ResetPasswordResponseModel(BaseModel):
+class ChangePasswordResponseModel(BaseModel):
     status: str = "ok"
-    message: str = "Password reset email sent"
+    message: str = "Password has been changed"
 
 
 class SendPasswordResetEmailResponseModel(BaseModel):

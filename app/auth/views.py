@@ -16,6 +16,7 @@ from .models import (
     LoginRequestModel,
     RefreshTokenRequestModel,
     SendPasswordResetEmailRequestModel,
+    ChangePasswordRequestModel,
 )
 
 
@@ -123,9 +124,10 @@ def logout(
     return {"status": "ok"}
 
 
-# ==================== RESET PASSWORD ====================
-def reset_password(
+# ==================== CHANGE PASSWORD ====================
+def change_password(
     auth: Annotated[HTTPAuthorizationCredentials, Depends(auth_scheme)],
+    data: ChangePasswordRequestModel,
 ):
     user_data = get_user_data_with_session_token(
         token=auth.credentials, session=auth_session
@@ -137,12 +139,25 @@ def reset_password(
             status_code=400,
         )
 
-    payload = {
-        "requestType": "PASSWORD_RESET",
-        "email": user_data["email"],
-    }
+    # Verify old password
+    r = auth_session.post(
+        build_auth_url("signInWithPassword"),
+        json={"email": user_data["email"], "password": data.old_password},
+    )
+    response_data = r.json()
 
-    r = auth_session.post(build_auth_url("sendOobCode"), json=payload)
+    if not r.ok:
+        error_msg = response_data["error"]["message"]
+
+        return JSONResponse(
+            {"status": "error", "message": error_msg}, status_code=r.status_code
+        )
+
+    # Change old password with new password
+    r = auth_session.post(
+        build_auth_url("update"),
+        json={"idToken": user_data["idToken"], "password": data.new_password},
+    )
     response_data = r.json()
 
     if not r.ok:
@@ -152,7 +167,7 @@ def reset_password(
             {"status": "error", "message": error_msg}, status_code=r.status_code
         )
 
-    return {"status": "ok", "message": "Password reset email sent"}
+    return {"status": "ok", "message": "Password has been changed"}
 
 
 # ==================== SEND PASSWORD RESET EMAIL ====================
