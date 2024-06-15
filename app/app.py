@@ -6,6 +6,7 @@ from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.responses import RedirectResponse, JSONResponse
 from .auth.urls import urls_patterns as auth_urls
 from .profile.urls import urls_patterns as profile_urls
+from .machine_learning_backend.urls import urls_patterns as machine_learning_backend_urls
 from .utils import comma_separated_text
 
 app = FastAPI(
@@ -53,6 +54,9 @@ for kwargs_url in auth_urls:
     app.add_api_route(**kwargs_url)
 
 for kwargs_url in profile_urls:
+    app.add_api_route(**kwargs_url)
+
+for kwargs_url in machine_learning_backend_urls:
     app.add_api_route(**kwargs_url)
 
 app.add_api_route("/", endpoint=redirect_docs, include_in_schema=False)

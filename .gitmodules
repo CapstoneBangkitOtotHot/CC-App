@@ -1,0 +1,3 @@
+[submodule "app/machine_learning_backend/ML_Backend"]
+	path = app/machine_learning_backend/ML_Backend
+	url = https://github.com/CapstoneBangkitOtotHot/ML_Backend.git
