@@ -9,6 +9,7 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install python3 python3-pip python3-dev -y
 RUN pip install -r requirements.txt --no-input --break-system-packages
+RUN pip install -r app/machine_learning_backend/ML_Backend/requirements.txt --no-input --break-system-packages
 
 # Timezone
 ENV DEBIAN_FRONTEND noninteractive
