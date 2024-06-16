@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from ..auth.utils import get_user_data_with_session_token
 from ..auth.views import auth_scheme, auth_session
 from ..profile.utils import verify_image_format
-from .utils import get_bucket
+from .utils import get_bucket, get_tips
 
 from .ML_Backend.model import inference_model
 
@@ -81,6 +81,16 @@ def predict(
     for inference in data["inferences"]:
         inference["cropped_img"] = numpy_binary_to_bucket_url(inference["cropped_img"])
 
-    print(data)
+    for info in data["inferences"]:
+        # Temporary workaround for freshness_percentage
+        fp = info["freshness_percentage"]
+        fp = int((abs(fp) * 100) / 20 * 10)
+        if fp >= 100:
+            fp = 100
+
+        info["freshness_percentage"] = f"{fp}%"
+
+        info["freshness_days"] = int(abs(info["freshness_days"]))
+        info["tips"] = get_tips(info["fruit_class_string"].lower(), fp)
 
     return {"status": "ok", "data": data}

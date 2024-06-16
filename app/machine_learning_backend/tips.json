@@ -1,0 +1,36 @@
+{
+    "apple": [
+        {
+            "range": [80, 100],
+            "tips": [
+                "Simpan apel di dalam kulkas untuk mempertahankan kesegaran yang lebih lama.",
+                "Cuci apel sebelum dikonsumsi untuk menghilangkan sisa pestisida.",
+                "Segera konsumsi atau gunakan untuk menu salad buah agar mendapatkan rasa dan tekstur yang baik."
+            ]
+        },
+        {
+            "range": [60, 79],
+            "tips": [
+                "SSimpan apel di dalam kulkas dan konsumsi dalam beberapa hari.",
+                "CApel yang mulai kehilangan kesegaran bisa digunakan untuk membuat jus, smoothie, atau saus apel.",
+                "Periksa bagian yang berubah warna dan potong sebelum dimakan."
+            ]
+        },
+        {
+            "range": [40, 59],
+            "tips": [
+                "Segera diolah untuk menghindari pembusukan.",
+                "Gunakan dalam resep yang memerlukan pemanasan seperti pie apel, kue, atau selai apel.",
+                "Potong bagian yang rusak dan hindari bagian yang sudah terlalu lunak atau berbau."
+            ]
+        },
+        {
+            "range": [0, 39],
+            "tips": [
+                "Hindari mengonsumsi apel yang sudah tidak segar karena dapat menyebabkan masalah kesehatan.",
+                "Jika sebagian apel masih tampak bagus, potong bagian yang buruk dan gunakan sisanya untuk masakan yang memerlukan pemanasan intensif.",
+                "Jika sudah berjamur, segera buang apel tersebut untuk mencegah penyebaran jamur ke buah lainnya."
+            ]
+        }
+    ]
+}
