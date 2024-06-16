@@ -15,6 +15,17 @@ def verify_image_format(fp):
             },
             status_code=400,
         )
+
+    # TODO: Add convertion for transparency images
+    if im.has_transparency_data:
+        return JSONResponse(
+            {
+                "status": "error",
+                "message": "Image cannot be transparent or alpha channel",
+            },
+            status_code=400,
+        )
+
     if im.format not in ALLOWED_IMAGE_FORMATS:
         return JSONResponse(
             {
