@@ -9,7 +9,6 @@ from ..profile.utils import verify_image_format
 from .utils import get_bucket
 
 from .ML_Backend.model import inference_model
-from .ML_Backend.metadata import FruitMetadata, FruitClass
 
 
 from PIL import Image
@@ -81,7 +80,6 @@ def predict(
     data["orig_img"] = numpy_binary_to_bucket_url(data["orig_img"])
     for inference in data["inferences"]:
         inference["cropped_img"] = numpy_binary_to_bucket_url(inference["cropped_img"])
-        inference["class"] = FruitMetadata[FruitClass(inference["class"])]["string"]
 
     print(data)
 
