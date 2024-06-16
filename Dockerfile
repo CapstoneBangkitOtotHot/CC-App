@@ -8,6 +8,7 @@ WORKDIR /app
 
 RUN apt-get update
 RUN apt-get install python3 python3-pip python3-dev -y
+RUN apt-get install ffmpeg libsm6 libxext6 libgl1 -y
 RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-input --break-system-packages
 RUN pip install -r requirements.txt --no-input --break-system-packages
 RUN pip install -r app/machine_learning_backend/ML_Backend/requirements.txt --no-input --break-system-packages
