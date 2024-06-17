@@ -32,5 +32,104 @@
                 "Jika sudah berjamur, segera buang apel tersebut untuk mencegah penyebaran jamur ke buah lainnya."
             ]
         }
+    ],
+    "sapodilla": [
+        {
+            "range": [80, 100],
+            "tips": [
+                "Segera dikonsumsi untuk menikmati rasa terbaik.",
+                "Simpan di suhu ruangan jika akan dikonsumsi dalam 1-2 hari.",
+                "Jika ingin menyimpannya lebih lama, letakkan di dalam kulkas untuk memperpanjang kesegarannya hingga 3-5 hari."
+            ]
+        },
+        {
+            "range": [60, 79],
+            "tips": [
+                "Ideal untuk dibuat jus, smoothie, atau tambahan pada salad buah.",
+                "Konsumsi dalam 1-2 hari untuk rasa terbaik.",
+                "Simpan di kulkas jika belum akan dikonsumsi segera untuk menjaga kesegarannya."
+            ]
+        },
+        {
+            "range": [40, 59],
+            "tips": [
+                "Buang bagian yang rusak atau terlalu lembek.",
+                "Gunakan segera untuk keperluan memasak, seperti campuran dalam kue atau pudding.",
+                "Simpan di kulkas dan konsumsi dalam 24 jam untuk mencegah pembusukan lebih lanjut."
+            ]
+        },
+        {
+            "range": [0, 39],
+            "tips": [
+                "Sebaiknya tidak dikonsumsi secara langsung.",
+                "Jika masih ada bagian yang bisa diselamatkan, gunakan untuk membuat kompos atau bahan pupuk organik.",
+                "Hindari menyimpan sawo dalam kondisi ini bersama buah lainnya untuk mencegah kontaminasi."
+            ]
+        }
+    ],
+    "mango": [
+        {
+            "range": [80, 100],
+            "tips": [
+                "Simpan mangga di dalam kulkas untuk memperpanjang kesegaran hingga beberapa hari dan hindari menumpuk mangga."
+            ]
+        },
+        {
+            "range": [60, 79],
+            "tips": [
+                "Biarkan mangga di suhu ruangan selama beberapa hari untuk mempercepat proses pematangan.",
+                "Hindari menempatkan mangga di tempat yang terlalu dingin karena akan memperlambat pematangan."
+            ]
+        },
+        {
+            "range": [40, 59],
+            "tips": [
+                "Simpan mangga di suhu ruangan agar bisa matang secara alami dalam beberapa hari hingga seminggu.",
+                "Jika ingin mempercepat pematangan, letakkan mangga di dalam kantong kertas bersama dengan buah lain."
+            ]
+        },
+        {
+            "range": [0, 39],
+            "tips": [
+                "Segera konsumsi atau atau gunakan untuk membuat jus, smoothie, atau saus untuk menghindari pemborosan.",
+                "Simpan di kulkas jika belum bisa dikonsumsi dengan segera, tetapi jangan terlalu lama karena dapat membusuk."
+            ]
+        }
+    ],
+    "tomato": [
+        {
+            "range": [90, 100],
+            "tips": [
+                "Ideal untuk salad dan konsumsi mentah.",
+                "Simpan di suhu ruangan dan hindari sinar matahari langsung untuk menjaga kesegarannya."
+            ]
+        },
+        {
+            "range": [70, 89],
+            "tips": [
+                "Cocok untuk berbagai keperluan masakan, termasuk membuat saus dan jus.",
+                "Simpan di suhu ruangan jika akan digunakan dalam beberapa hari, atau di dalam lemari es untuk memperpanjang kesegaran."
+            ]
+        },
+        {
+            "range": [50, 69],
+            "tips": [
+                "Cocok untuk dimasak menjadi saus atau sup karena teksturnya yang lebih lembut.",
+                "Simpan di dalam lemari es untuk mencegah pembusukan lebih lanjut, dan gunakan segera."
+            ]
+        },
+        {
+            "range": [30, 49],
+            "tips": [
+                "Hindari mengonsumsi tomat yang hampir busuk karena dapat mengandung bakteri yang berbahaya.",
+                "Jika masih ada bagian yang layak, buang bagian yang busuk dan gunakan segera dalam masakan yang memerlukan pemanasan."
+            ]
+        },
+        {
+            "range": [0, 29],
+            "tips": [
+                "Buang tomat yang sudah busuk sepenuhnya karena mengonsumsi tomat busuk dapat menyebabkan masalah kesehatan."
+            ]
+        }
     ]
 }

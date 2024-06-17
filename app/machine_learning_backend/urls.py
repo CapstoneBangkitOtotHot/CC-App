@@ -1,4 +1,6 @@
 from .backend import predict
+from .models import PredictImageResponseModel
+
 urls_patterns = [
     {
         "path": "/api/predict/fruit",
@@ -7,7 +9,7 @@ urls_patterns = [
         "summary": "Process image to be predicted",
         "description": """Process image and return data that has been segmented, processed, \
         and analyzed its freshness""",
-        # "responses": {200: {"model": }},
+        "responses": {200: {"model": PredictImageResponseModel}},
     },
 ]
 

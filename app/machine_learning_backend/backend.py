@@ -90,9 +90,8 @@ def predict(
 
         info["freshness_percentage"] = f"{fp}%"
 
-        fd = int(abs(info["freshness_days"]))
-
         # Workaround for freshness_days
+        fd = int(abs(info["freshness_days"]))
         if fp <= 15:
             info["freshness_days"] = 0
         else:
