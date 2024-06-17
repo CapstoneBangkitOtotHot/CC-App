@@ -90,7 +90,15 @@ def predict(
 
         info["freshness_percentage"] = f"{fp}%"
 
-        info["freshness_days"] = int(abs(info["freshness_days"]))
+        fd = int(abs(info["freshness_days"]))
+
+        # Workaround for freshness_days
+        if fp <= 15:
+            info["freshness_days"] = 0
+        else:
+            info["freshness_days"] = fd
+
+        # Add tips
         info["tips"] = get_tips(info["fruit_class_string"].lower(), fp)
 
     return {"status": "ok", "data": data}
