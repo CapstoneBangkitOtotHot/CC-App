@@ -1,21 +1,29 @@
 import secrets
+import cv2
+import io
+import numpy as np
 from typing import Annotated
 from fastapi import Depends, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
+from PIL import Image
+
 from ..auth.utils import get_user_data_with_session_token
 from ..auth.views import auth_scheme, auth_session
 from ..profile.utils import verify_image_format
 from .utils import get_bucket, get_tips
-
 from .ML_Backend.model import inference_model
+from .ML_Backend.metadata import FruitClass
 
-
-from PIL import Image
-import numpy as np
-import io
 
 bucket = get_bucket()
+
+SUPPORTED_FRUITS = [
+    FruitClass.APPLE.value,
+    FruitClass.MANGO.value,
+    FruitClass.SAPODILLA.value,
+    FruitClass.TOMATO.value,
+]
 
 
 def numpy_binary_to_bucket_url(np_img):
@@ -64,9 +72,22 @@ def predict(
     if err:
         return err
 
-    # pre processs for feeding to model
+    # Remove transparency in the image
+    # to avoid error while predicting
+    fp = io.BytesIO()
     im = Image.open(image.file)
+    im.convert("RGB").save(fp, format="JPEG")
+    im.close()
+
+    # Begin prosessing the image
+    im = Image.open(fp, formats=["JPEG"])
     im = np.array(im)
+
+    # BUG: cv2.imread are converting image to BGR mode
+    # while PIL.Image.open doesn't do that, instead they going RGB mode
+    # cv.imread Reference: https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#gab32ee19e22660912565f8140d0f675a8
+    # cv2.cvColor Reference: https://gist.github.com/panzi/1ceac1cb30bb6b3450aa5227c02eedd3
+    im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
 
     # Predict image
     # GYATTTT THIS MODEL IS THICC 🥵
@@ -82,6 +103,13 @@ def predict(
         inference["cropped_img"] = numpy_binary_to_bucket_url(inference["cropped_img"])
 
     for info in data["inferences"]:
+
+        # Ignore unsupported fruits
+        try:
+            SUPPORTED_FRUITS.index(info["fruit_class"])
+        except ValueError:
+            continue
+
         # Temporary workaround for freshness_percentage
         fp = info["freshness_percentage"]
         fp = int((abs(fp) * 100) / 20 * 10)
