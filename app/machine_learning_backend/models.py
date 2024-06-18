@@ -7,7 +7,7 @@ class PredictImageDataResponseModel(BaseModel):
     fruit_class: int
     fruit_class_string: str
     cropped_img: str
-    confidence: float,
+    confidence: float
     freshness_percentage: str
     freshness_days: int
 
